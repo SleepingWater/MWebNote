@@ -143,30 +143,31 @@
 * 全局变量会自动成为全局对象（比如浏览器中的window对象）的属性，因此可以不直接通过全局对象的此法名称，而是间接地通过对全局对象属性的引用来对齐进行访问。window.a 通过这种技术可以访问哪些被同名变量所遮蔽的全局变量。而非全局的变量如果被遮蔽了，就无法被访问到了。</p>
 
 <p>2、欺骗词法<br/>
-2.1、eval()<br/>
-<code><br/>
-function foo(str,a){<br/>
-    eval(str);//欺骗！<br/>
-    console.log(b,a);<br/>
-}<br/>
-var b=1;<br/>
-foo(&quot;var b=3;&quot;,1);<br/>
-</code><br/>
-2.2、with()<br/>
-<code><br/>
-function foo(obj){<br/>
-    with(obj){<br/>
-        a = 2;<br/>
-    }<br/>
-}<br/>
-var o1 = {a:3};<br/>
-var o2 = {b:3};<br/>
-foo(o1);<br/>
-console.log(o1.a);//2<br/>
-foo(o2);<br/>
-console.log(o2.a);//undefined<br/>
-console.log(a);//2 a被泄露到全局作用域上了<br/>
-</code></p>
+2.1、eval()</p>
+
+<pre><code>function foo(str,a){
+    eval(str);//欺骗！
+    console.log(b,a);
+}
+var b=1;
+foo(&quot;var b=3;&quot;,1);
+</code></pre>
+
+<p>2.2、with()</p>
+
+<pre><code>function foo(obj){
+    with(obj){
+        a = 2;
+    }
+}
+var o1 = {a:3};
+var o2 = {b:3};
+foo(o1);
+console.log(o1.a);//2
+foo(o2);
+console.log(o2.a);//undefined
+console.log(a);//2 a被泄露到全局作用域上了
+</code></pre>
 
 <p><strong>不推荐使用eval()和with</strong></p>
 

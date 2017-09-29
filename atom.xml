@@ -4,7 +4,7 @@
   <title><![CDATA[学习笔记]]></title>
   <link href="https://sleepingwater.github.io/MWebNote/atom.xml" rel="self"/>
   <link href="https://sleepingwater.github.io/MWebNote/"/>
-  <updated>2017-09-29T16:43:58+08:00</updated>
+  <updated>2017-09-29T16:45:38+08:00</updated>
   <id>https://sleepingwater.github.io/MWebNote/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -24,30 +24,31 @@
 * 全局变量会自动成为全局对象（比如浏览器中的window对象）的属性，因此可以不直接通过全局对象的此法名称，而是间接地通过对全局对象属性的引用来对齐进行访问。window.a 通过这种技术可以访问哪些被同名变量所遮蔽的全局变量。而非全局的变量如果被遮蔽了，就无法被访问到了。</p>
 
 <p>2、欺骗词法<br/>
-2.1、eval()<br/>
-<code><br/>
-function foo(str,a){<br/>
-    eval(str);//欺骗！<br/>
-    console.log(b,a);<br/>
-}<br/>
-var b=1;<br/>
-foo(&quot;var b=3;&quot;,1);<br/>
-</code><br/>
-2.2、with()<br/>
-<code><br/>
-function foo(obj){<br/>
-    with(obj){<br/>
-        a = 2;<br/>
-    }<br/>
-}<br/>
-var o1 = {a:3};<br/>
-var o2 = {b:3};<br/>
-foo(o1);<br/>
-console.log(o1.a);//2<br/>
-foo(o2);<br/>
-console.log(o2.a);//undefined<br/>
-console.log(a);//2 a被泄露到全局作用域上了<br/>
-</code></p>
+2.1、eval()</p>
+
+<pre><code>function foo(str,a){
+    eval(str);//欺骗！
+    console.log(b,a);
+}
+var b=1;
+foo(&quot;var b=3;&quot;,1);
+</code></pre>
+
+<p>2.2、with()</p>
+
+<pre><code>function foo(obj){
+    with(obj){
+        a = 2;
+    }
+}
+var o1 = {a:3};
+var o2 = {b:3};
+foo(o1);
+console.log(o1.a);//2
+foo(o2);
+console.log(o2.a);//undefined
+console.log(a);//2 a被泄露到全局作用域上了
+</code></pre>
 
 <p><strong>不推荐使用eval()和with</strong></p>
 
@@ -227,28 +228,37 @@ foo.doAnother();
 <p>一些常用用法（使用自己没有，但是别人有的方法）</p>
 
 <ol>
-<li><p>数组之间追加<br/>
-<code><br/>
-var arr1 = [1,2,3];<br/>
-var arr2 = [a,b,c];<br/>
-Array.prototype.push.apply(arr1,arr2);<br/>
-</code></p></li>
-<li><p>获取数组中的最大值和最小值<br/>
-<code><br/>
-var numbers = [11,23,13,4,9]<br/>
-var maxNumber = Math.max.apply(Math,numbers);<br/>
-</code></p></li>
-<li><p>验证是否是数组<br/>
-<code><br/>
-function isArray(obj){<br/>
-return object.prototype.toString().call(obj)===&quot;[object Array]&quot;<br/>
-}<br/>
-</code></p></li>
-<li><p>类（伪）数组使用数组方法<br/>
-<code><br/>
-var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*&quot;))<br/>
-</code></p></li>
+<li>数组之间追加</li>
 </ol>
+
+<pre><code>var arr1 = [1,2,3];
+var arr2 = [a,b,c];
+Array.prototype.push.apply(arr1,arr2);
+</code></pre>
+
+<ol>
+<li>获取数组中的最大值和最小值</li>
+</ol>
+
+<pre><code>var numbers = [11,23,13,4,9]
+var maxNumber = Math.max.apply(Math,numbers);
+</code></pre>
+
+<ol>
+<li>验证是否是数组</li>
+</ol>
+
+<pre><code>function isArray(obj){
+    return object.prototype.toString().call(obj)===&quot;[object Array]&quot;
+}
+</code></pre>
+
+<ol>
+<li>类（伪）数组使用数组方法</li>
+</ol>
+
+<pre><code>var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*&quot;))
+</code></pre>
 
 ]]></content>
   </entry>
@@ -265,28 +275,37 @@ var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*
 <p>一些常用用法（使用自己没有，但是别人有的方法）</p>
 
 <ol>
-<li><p>数组之间追加<br/>
-<code><br/>
-var arr1 = [1,2,3];<br/>
-var arr2 = [a,b,c];<br/>
-Array.prototype.push.apply(arr1,arr2);<br/>
-</code></p></li>
-<li><p>获取数组中的最大值和最小值<br/>
-<code><br/>
-var numbers = [11,23,13,4,9]<br/>
-var maxNumber = Math.max.apply(Math,numbers);<br/>
-</code></p></li>
-<li><p>验证是否是数组<br/>
-<code><br/>
-function isArray(obj){<br/>
-return object.prototype.toString().call(obj)===&quot;[object Array]&quot;<br/>
-}<br/>
-</code></p></li>
-<li><p>类（伪）数组使用数组方法<br/>
-<code><br/>
-var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*&quot;))<br/>
-</code></p></li>
+<li>数组之间追加</li>
 </ol>
+
+<pre><code>var arr1 = [1,2,3];
+var arr2 = [a,b,c];
+Array.prototype.push.apply(arr1,arr2);
+</code></pre>
+
+<ol>
+<li>获取数组中的最大值和最小值</li>
+</ol>
+
+<pre><code>var numbers = [11,23,13,4,9]
+var maxNumber = Math.max.apply(Math,numbers);
+</code></pre>
+
+<ol>
+<li>验证是否是数组</li>
+</ol>
+
+<pre><code>function isArray(obj){
+    return object.prototype.toString().call(obj)===&quot;[object Array]&quot;
+}
+</code></pre>
+
+<ol>
+<li>类（伪）数组使用数组方法</li>
+</ol>
+
+<pre><code>var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*&quot;))
+</code></pre>
 
 ]]></content>
   </entry>
@@ -297,44 +316,44 @@ var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*
     <updated>2017-07-09T21:03:21+08:00</updated>
     <id>https://sleepingwater.github.io/MWebNote/14996054012366.html</id>
     <content type="html"><![CDATA[
-<p>把创建实例对象的职责和管理单利的职责分别放置在两个方法里，这两个方法可以独立变化而不影响，当它们连接在一起的时候，就完成了创建唯一实例对象的功能。<br/>
-<code><br/>
-var getSingle = function(fn){<br/>
-    var result;//用变量resule来保存fn的计算结果。resule变量因为身在闭包中，它永远不会被销毁。在将来的请求中，如果result已经被赋值，那么它将返回这个值。<br/>
-    return function(){<br/>
-        return result || (result = fn.apply(this,arguments))<br/>
-    }<br/>
-}<br/>
-var createDiv = function(){<br/>
-    return &#39;abc&#39;;<br/>
-}<br/>
-var createSingleDiv = getSingle(createDiv);<br/>
-var a = createSingleDiv();<br/>
-var b = createSingleDiv();<br/>
-a===b //true<br/>
-</code></p>
+<p>把创建实例对象的职责和管理单利的职责分别放置在两个方法里，这两个方法可以独立变化而不影响，当它们连接在一起的时候，就完成了创建唯一实例对象的功能。</p>
+
+<pre><code>var getSingle = function(fn){
+    var result;//用变量resule来保存fn的计算结果。resule变量因为身在闭包中，它永远不会被销毁。在将来的请求中，如果result已经被赋值，那么它将返回这个值。
+    return function(){
+        return result || (result = fn.apply(this,arguments))
+    }
+}
+var createDiv = function(){
+    return &#39;abc&#39;;
+}
+var createSingleDiv = getSingle(createDiv);
+var a = createSingleDiv();
+var b = createSingleDiv();
+a===b //true
+</code></pre>
 
 <h1 id="toc_0">策略模式</h1>
 
-<p>定义一系列的算法，把它们一个个封装起来，并且使它们可以互相替换。<br/>
-<code><br/>
-var strategies = {<br/>
-    &quot;S&quot;: function(salary){<br/>
-        return salary*5;<br/>
-    },<br/>
-    &quot;A&quot;: function(salary){<br/>
-        return salary*3;<br/>
-    },<br/>
-    &quot;B&quot;: function(salary){<br/>
-    return salary;<br/>
-    }<br/>
-};<br/>
-var calculateBonus = function(level,salary){<br/>
-    return strategies[level](salary);<br/>
-};<br/>
-console.log(calculateBonus(&quot;S&quot;,2000));<br/>
-console.log(calculateBonus(&quot;A&quot;,1000));<br/>
-</code></p>
+<p>定义一系列的算法，把它们一个个封装起来，并且使它们可以互相替换。</p>
+
+<pre><code>var strategies = {
+    &quot;S&quot;: function(salary){
+        return salary*5;
+    },
+    &quot;A&quot;: function(salary){
+        return salary*3;
+    },
+    &quot;B&quot;: function(salary){
+    return salary;
+    }
+};
+var calculateBonus = function(level,salary){
+    return strategies[level](salary);
+};
+console.log(calculateBonus(&quot;S&quot;,2000));
+console.log(calculateBonus(&quot;A&quot;,1000));
+</code></pre>
 
 <h1 id="toc_1">迭代器模式</h1>
 

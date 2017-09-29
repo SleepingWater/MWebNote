@@ -166,28 +166,37 @@
 <p>一些常用用法（使用自己没有，但是别人有的方法）</p>
 
 <ol>
-<li><p>数组之间追加<br/>
-<code><br/>
-var arr1 = [1,2,3];<br/>
-var arr2 = [a,b,c];<br/>
-Array.prototype.push.apply(arr1,arr2);<br/>
-</code></p></li>
-<li><p>获取数组中的最大值和最小值<br/>
-<code><br/>
-var numbers = [11,23,13,4,9]<br/>
-var maxNumber = Math.max.apply(Math,numbers);<br/>
-</code></p></li>
-<li><p>验证是否是数组<br/>
-<code><br/>
-function isArray(obj){<br/>
-return object.prototype.toString().call(obj)===&quot;[object Array]&quot;<br/>
-}<br/>
-</code></p></li>
-<li><p>类（伪）数组使用数组方法<br/>
-<code><br/>
-var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*&quot;))<br/>
-</code></p></li>
+<li>数组之间追加</li>
 </ol>
+
+<pre><code>var arr1 = [1,2,3];
+var arr2 = [a,b,c];
+Array.prototype.push.apply(arr1,arr2);
+</code></pre>
+
+<ol>
+<li>获取数组中的最大值和最小值</li>
+</ol>
+
+<pre><code>var numbers = [11,23,13,4,9]
+var maxNumber = Math.max.apply(Math,numbers);
+</code></pre>
+
+<ol>
+<li>验证是否是数组</li>
+</ol>
+
+<pre><code>function isArray(obj){
+    return object.prototype.toString().call(obj)===&quot;[object Array]&quot;
+}
+</code></pre>
+
+<ol>
+<li>类（伪）数组使用数组方法</li>
+</ol>
+
+<pre><code>var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*&quot;))
+</code></pre>
 
 
 		</div>

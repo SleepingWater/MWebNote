@@ -138,44 +138,44 @@
  <div class="markdown-body">
 <h1>单例模式</h1>
 
-<p>把创建实例对象的职责和管理单利的职责分别放置在两个方法里，这两个方法可以独立变化而不影响，当它们连接在一起的时候，就完成了创建唯一实例对象的功能。<br/>
-<code><br/>
-var getSingle = function(fn){<br/>
-    var result;//用变量resule来保存fn的计算结果。resule变量因为身在闭包中，它永远不会被销毁。在将来的请求中，如果result已经被赋值，那么它将返回这个值。<br/>
-    return function(){<br/>
-        return result || (result = fn.apply(this,arguments))<br/>
-    }<br/>
-}<br/>
-var createDiv = function(){<br/>
-    return &#39;abc&#39;;<br/>
-}<br/>
-var createSingleDiv = getSingle(createDiv);<br/>
-var a = createSingleDiv();<br/>
-var b = createSingleDiv();<br/>
-a===b //true<br/>
-</code></p>
+<p>把创建实例对象的职责和管理单利的职责分别放置在两个方法里，这两个方法可以独立变化而不影响，当它们连接在一起的时候，就完成了创建唯一实例对象的功能。</p>
+
+<pre><code>var getSingle = function(fn){
+    var result;//用变量resule来保存fn的计算结果。resule变量因为身在闭包中，它永远不会被销毁。在将来的请求中，如果result已经被赋值，那么它将返回这个值。
+    return function(){
+        return result || (result = fn.apply(this,arguments))
+    }
+}
+var createDiv = function(){
+    return &#39;abc&#39;;
+}
+var createSingleDiv = getSingle(createDiv);
+var a = createSingleDiv();
+var b = createSingleDiv();
+a===b //true
+</code></pre>
 
 <h1 id="toc_0">策略模式</h1>
 
-<p>定义一系列的算法，把它们一个个封装起来，并且使它们可以互相替换。<br/>
-<code><br/>
-var strategies = {<br/>
-    &quot;S&quot;: function(salary){<br/>
-        return salary*5;<br/>
-    },<br/>
-    &quot;A&quot;: function(salary){<br/>
-        return salary*3;<br/>
-    },<br/>
-    &quot;B&quot;: function(salary){<br/>
-    return salary;<br/>
-    }<br/>
-};<br/>
-var calculateBonus = function(level,salary){<br/>
-    return strategies[level](salary);<br/>
-};<br/>
-console.log(calculateBonus(&quot;S&quot;,2000));<br/>
-console.log(calculateBonus(&quot;A&quot;,1000));<br/>
-</code></p>
+<p>定义一系列的算法，把它们一个个封装起来，并且使它们可以互相替换。</p>
+
+<pre><code>var strategies = {
+    &quot;S&quot;: function(salary){
+        return salary*5;
+    },
+    &quot;A&quot;: function(salary){
+        return salary*3;
+    },
+    &quot;B&quot;: function(salary){
+    return salary;
+    }
+};
+var calculateBonus = function(level,salary){
+    return strategies[level](salary);
+};
+console.log(calculateBonus(&quot;S&quot;,2000));
+console.log(calculateBonus(&quot;A&quot;,1000));
+</code></pre>
 
 <h1 id="toc_1">迭代器模式</h1>
 
