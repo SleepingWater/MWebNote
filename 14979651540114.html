@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  MWeb学习笔记
+  第五章：作用域闭包 - MWeb学习笔记
   
   </title>
  <meta name="description" content="">
@@ -131,91 +131,85 @@
             </div>
             <div class="large-9 medium-9 columns">
 
- 
+ <div class="markdown-body">
+<h1>第五章：作用域闭包</h1>
+
+<ul>
+<li>对函数类型的值进行传递时，保留对它被声明的位置所处的作用域的引用。</li>
+<li>只要使用了回调函数，实际上就是在使用闭包！so回调函数丢失外部函数调用对象</li>
+</ul>
+
+<pre><code>for (var i = 1; i &lt;= 5; i++) {
+    setTimeout( function timer(){
+        console.log(i);
+    },i*1000);
+}
+//每隔1秒输出6
+</code></pre>
+
+<ul>
+<li>块作用域。let劫持一个块儿并且就在这个块儿中声明一个变量，这实质上将块儿变成了一个我们可以闭包的作用域。</li>
+<li>模块</li>
+</ul>
+
+<pre><code>function CoolModule(){
+    var something = &quot;cool&quot;;
+    var another = [1,2,3,4,5];
+    function doSomething(){
+        console.log(something);
+    }
+    function doAnother(){
+        console.log(another.join(&quot;,&quot;));
+    }
+    return {
+        doSomething:doSomething,
+        doAnother:doAnother,
+    };
+}
+var foo = CoolModule();
+foo.doSomething();
+foo.doAnother();
+</code></pre>
 
 
-	
-		<div class="markdown-body">
-		<h1>第一章：作用域是什么&第二章：词法作用域</h1>
+</div>
 
-		<h1 id="toc_0">第一章：作用域是什么</h1>
+<br /><br />
+<hr />
 
-<p>1、编译原理</p>
+<div class="row clearfix">
+  <div class="large-6 columns">
+	<div class="text-left" style="padding:15px 0px;">
+		
+	        <a href="14979642997081.html"  title="Previous Post: 第四章：提升">&laquo; 第四章：提升</a>
+	    
+	</div>
+  </div>
+  <div class="large-6 columns">
+	<div class="text-right" style="padding:15px 0px;">
+		
+	        <a href="14980689294470.html" 
+	        title="Next Post: 第一章：关于this">第一章：关于this &raquo;</a>
+	    
+	</div>
+  </div>
+</div>
 
-<p>程序中的一段源代码执行之前会经历三个步骤</p>
+<div class="row">
+<div style="padding:0px 0.93em;" class="share-comments">
 
-<ol>
-<li>分词/词法分析</li>
-<li>解析/语法分析</li>
-<li>代码生成</li>
-</ol>
-
-<p>对于JavaScript来说，大部分情况下编译发生在代码执行前的几微秒（甚至更短）</p>
-
-<p>2、理解作用域</p>
-
-<p>2.1、参与处理过程的演员们</p>
-
-<ol>
-<li>引擎</li>
-<li>编译器</li>
-<li>作用域</li>
-</ol>
-
-<p>2.2、对话</p>
-
-<p>可以合理地假设编译器所产生的代码能够用下面的伪代码进行概括：”为一个变量分配内存，将其命名为a，然后将2保存进这个变量。“然后这并不完全正确。<br/>
-事实上会进行如下操作<br/>
-1. 遇到var a，编译器会询问作用域是否已经有一个该名称的变量存在于同一个作用域的集合中。如果是编译器会忽略该声明，继续进行编译；否则它会要求作用域在当前作用域的集合中声明一个新的变量，并命名为a。<br/>
-2. 在运行时引擎会在作用域中查找该变量，如果能找到就给它赋值。</p>
-
-<p>2.3编译器有话说<br/>
-LHS和RHS<br/>
-异常：如果RHS没有找到某个变量会抛出异常，如果LHS没有找到某个变量，会创建一个该名称的变量。</p>
-
-<p>3、作用域嵌套<br/>
-当前作用域没有找到某个变量时，引擎会在外层嵌套的作用域中继续查找。</p>
-
-<h1 id="toc_1">第二章：词法作用域</h1>
-
-<p>1、词法阶段<br/>
-* 作用域查找会在找到第一个匹配的标识符时停止。在多层的嵌套作用域中可以定义同名的标识符，这叫做”遮蔽效应“。<br/>
-* 全局变量会自动成为全局对象（比如浏览器中的window对象）的属性，因此可以不直接通过全局对象的此法名称，而是间接地通过对全局对象属性的引用来对齐进行访问。window.a 通过这种技术可以访问哪些被同名变量所遮蔽的全局变量。而非全局的变量如果被遮蔽了，就无法被访问到了。</p>
-
-<p>2、欺骗词法<br/>
-2.1、eval()<br/>
-<code><br/>
-function foo(str,a){<br/>
-    eval(str);//欺骗！<br/>
-    console.log(b,a);<br/>
-}<br/>
-var b=1;<br/>
-foo(&quot;var b=3;&quot;,1);<br/>
-</code><br/>
-2.2、with()<br/>
-<code><br/>
-function foo(obj){<br/>
-    with(obj){<br/>
-        a = 2;<br/>
-    }<br/>
-}<br/>
-var o1 = {a:3};<br/>
-var o2 = {b:3};<br/>
-foo(o1);<br/>
-console.log(o1.a);//2<br/>
-foo(o2);<br/>
-console.log(o2.a);//undefined<br/>
-console.log(a);//2 a被泄露到全局作用域上了<br/>
-</code></p>
-
-<p><strong>不推荐使用eval()和with</strong></p>
-
-
-		</div>
-	
-
-  
-  
+</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		var currentURL = '14979651540114.html';
+		$('#side-nav a').each(function(){
+			if($(this).attr('href') == currentURL){
+				$(this).parent().addClass('active');
+			}
+		});
+	});
+</script>  
 </div></div>
 
 

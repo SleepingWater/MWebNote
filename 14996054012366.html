@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  MWeb学习笔记
+  单例模式 - MWeb学习笔记
   
   </title>
  <meta name="description" content="">
@@ -131,91 +131,89 @@
             </div>
             <div class="large-9 medium-9 columns">
 
- 
+ <div class="markdown-body">
+<h1>单例模式</h1>
 
-
-	
-		<div class="markdown-body">
-		<h1>第一章：作用域是什么&第二章：词法作用域</h1>
-
-		<h1 id="toc_0">第一章：作用域是什么</h1>
-
-<p>1、编译原理</p>
-
-<p>程序中的一段源代码执行之前会经历三个步骤</p>
-
-<ol>
-<li>分词/词法分析</li>
-<li>解析/语法分析</li>
-<li>代码生成</li>
-</ol>
-
-<p>对于JavaScript来说，大部分情况下编译发生在代码执行前的几微秒（甚至更短）</p>
-
-<p>2、理解作用域</p>
-
-<p>2.1、参与处理过程的演员们</p>
-
-<ol>
-<li>引擎</li>
-<li>编译器</li>
-<li>作用域</li>
-</ol>
-
-<p>2.2、对话</p>
-
-<p>可以合理地假设编译器所产生的代码能够用下面的伪代码进行概括：”为一个变量分配内存，将其命名为a，然后将2保存进这个变量。“然后这并不完全正确。<br/>
-事实上会进行如下操作<br/>
-1. 遇到var a，编译器会询问作用域是否已经有一个该名称的变量存在于同一个作用域的集合中。如果是编译器会忽略该声明，继续进行编译；否则它会要求作用域在当前作用域的集合中声明一个新的变量，并命名为a。<br/>
-2. 在运行时引擎会在作用域中查找该变量，如果能找到就给它赋值。</p>
-
-<p>2.3编译器有话说<br/>
-LHS和RHS<br/>
-异常：如果RHS没有找到某个变量会抛出异常，如果LHS没有找到某个变量，会创建一个该名称的变量。</p>
-
-<p>3、作用域嵌套<br/>
-当前作用域没有找到某个变量时，引擎会在外层嵌套的作用域中继续查找。</p>
-
-<h1 id="toc_1">第二章：词法作用域</h1>
-
-<p>1、词法阶段<br/>
-* 作用域查找会在找到第一个匹配的标识符时停止。在多层的嵌套作用域中可以定义同名的标识符，这叫做”遮蔽效应“。<br/>
-* 全局变量会自动成为全局对象（比如浏览器中的window对象）的属性，因此可以不直接通过全局对象的此法名称，而是间接地通过对全局对象属性的引用来对齐进行访问。window.a 通过这种技术可以访问哪些被同名变量所遮蔽的全局变量。而非全局的变量如果被遮蔽了，就无法被访问到了。</p>
-
-<p>2、欺骗词法<br/>
-2.1、eval()<br/>
+<p>把创建实例对象的职责和管理单利的职责分别放置在两个方法里，这两个方法可以独立变化而不影响，当它们连接在一起的时候，就完成了创建唯一实例对象的功能。<br/>
 <code><br/>
-function foo(str,a){<br/>
-    eval(str);//欺骗！<br/>
-    console.log(b,a);<br/>
-}<br/>
-var b=1;<br/>
-foo(&quot;var b=3;&quot;,1);<br/>
-</code><br/>
-2.2、with()<br/>
-<code><br/>
-function foo(obj){<br/>
-    with(obj){<br/>
-        a = 2;<br/>
+var getSingle = function(fn){<br/>
+    var result;//用变量resule来保存fn的计算结果。resule变量因为身在闭包中，它永远不会被销毁。在将来的请求中，如果result已经被赋值，那么它将返回这个值。<br/>
+    return function(){<br/>
+        return result || (result = fn.apply(this,arguments))<br/>
     }<br/>
 }<br/>
-var o1 = {a:3};<br/>
-var o2 = {b:3};<br/>
-foo(o1);<br/>
-console.log(o1.a);//2<br/>
-foo(o2);<br/>
-console.log(o2.a);//undefined<br/>
-console.log(a);//2 a被泄露到全局作用域上了<br/>
+var createDiv = function(){<br/>
+    return &#39;abc&#39;;<br/>
+}<br/>
+var createSingleDiv = getSingle(createDiv);<br/>
+var a = createSingleDiv();<br/>
+var b = createSingleDiv();<br/>
+a===b //true<br/>
 </code></p>
 
-<p><strong>不推荐使用eval()和with</strong></p>
+<h1 id="toc_0">策略模式</h1>
+
+<p>定义一系列的算法，把它们一个个封装起来，并且使它们可以互相替换。<br/>
+<code><br/>
+var strategies = {<br/>
+    &quot;S&quot;: function(salary){<br/>
+        return salary*5;<br/>
+    },<br/>
+    &quot;A&quot;: function(salary){<br/>
+        return salary*3;<br/>
+    },<br/>
+    &quot;B&quot;: function(salary){<br/>
+    return salary;<br/>
+    }<br/>
+};<br/>
+var calculateBonus = function(level,salary){<br/>
+    return strategies[level](salary);<br/>
+};<br/>
+console.log(calculateBonus(&quot;S&quot;,2000));<br/>
+console.log(calculateBonus(&quot;A&quot;,1000));<br/>
+</code></p>
+
+<h1 id="toc_1">迭代器模式</h1>
 
 
-		</div>
-	
+</div>
 
-  
-  
+<br /><br />
+<hr />
+
+<div class="row clearfix">
+  <div class="large-6 columns">
+	<div class="text-left" style="padding:15px 0px;">
+		
+	        <a href="14985664640586.html"  title="Previous Post: 关于apply() call()">&laquo; 关于apply() call()</a>
+	    
+	</div>
+  </div>
+  <div class="large-6 columns">
+	<div class="text-right" style="padding:15px 0px;">
+		
+	        <a href="15021077667841.html" 
+	        title="Next Post: Promise">Promise &raquo;</a>
+	    
+	</div>
+  </div>
+</div>
+
+<div class="row">
+<div style="padding:0px 0.93em;" class="share-comments">
+
+</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		var currentURL = '14996054012366.html';
+		$('#side-nav a').each(function(){
+			if($(this).attr('href') == currentURL){
+				$(this).parent().addClass('active');
+			}
+		});
+	});
+</script>  
 </div></div>
 
 
