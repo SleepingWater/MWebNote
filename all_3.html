@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  MWeb学习笔记
+  学习笔记
   
   </title>
  <meta name="description" content="">
- <link href="atom.xml" rel="alternate" title="MWeb学习笔记" type="application/atom+xml">
+ <link href="atom.xml" rel="alternate" title="学习笔记" type="application/atom+xml">
     <link rel="stylesheet" href="asset/css/foundation.min.css" />
     <link rel="stylesheet" href="asset/css/docs.css" />
 
@@ -29,13 +29,13 @@
 <nav class="top-bar docs-bar hide-for-small" data-topbar>
 
 <div id="header">
-    <h1><a href="index.html">MWeb学习笔记</a></h1>
+    <h1><a href="index.html">学习笔记</a></h1>
 </div>
 
 </nav>
         <nav class="tab-bar show-for-small">
   <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
-    <span> &nbsp; MWeb学习笔记</span>
+    <span> &nbsp; 学习笔记</span>
   </a>
 </nav>
 
@@ -47,7 +47,9 @@
         <li><label>你不知道的js</label></li>
 
           
-            <li><a title="第一章：作用域是什么&第二章：词法作用域" href="14978876951045.html">第一章：作用域是什么&第二章：词法作用域</a></li>
+            <li><a title="第二章：词法作用域" href="15066746963163.html">第二章：词法作用域</a></li>
+          
+            <li><a title="第一章：作用域是什么" href="14978876951045.html">第一章：作用域是什么</a></li>
           
             <li><a title="第三章：函数作用域和块作用域" href="14978935513574.html">第三章：函数作用域和块作用域</a></li>
           
@@ -96,7 +98,9 @@
                     
                       <li class="side-title"><span>你不知道的js</span></li>
                         
-                          <li><a title="第一章：作用域是什么&第二章：词法作用域" href="14978876951045.html">第一章：作用域是什么&第二章：词法作用域</a></li>
+                          <li><a title="第二章：词法作用域" href="15066746963163.html">第二章：词法作用域</a></li>
+                        
+                          <li><a title="第一章：作用域是什么" href="14978876951045.html">第一章：作用域是什么</a></li>
                         
                           <li><a title="第三章：函数作用域和块作用域" href="14978935513574.html">第三章：函数作用域和块作用域</a></li>
                         
@@ -136,43 +140,17 @@
 
 	
 		<div class="markdown-body">
-		<h1>第五章：作用域闭包</h1>
+		<h1>第四章：提升</h1>
 
 		<ul>
-<li>对函数类型的值进行传递时，保留对它被声明的位置所处的作用域的引用。</li>
-<li>只要使用了回调函数，实际上就是在使用闭包！so回调函数丢失外部函数调用对象</li>
+<li>函数声明会被提升到普通变量之前</li>
+<li>重复的var声明会被忽略，但出现在后面的函数声明还是可以覆盖前面的</li>
+<li>IIFE（立即执行函数表达式）</li>
 </ul>
 
-<pre><code>for (var i = 1; i &lt;= 5; i++) {
-    setTimeout( function timer(){
-        console.log(i);
-    },i*1000);
-}
-//每隔1秒输出6
-</code></pre>
-
-<ul>
-<li>块作用域。let劫持一个块儿并且就在这个块儿中声明一个变量，这实质上将块儿变成了一个我们可以闭包的作用域。</li>
-<li>模块</li>
-</ul>
-
-<pre><code>function CoolModule(){
-    var something = &quot;cool&quot;;
-    var another = [1,2,3,4,5];
-    function doSomething(){
-        console.log(something);
-    }
-    function doAnother(){
-        console.log(another.join(&quot;,&quot;));
-    }
-    return {
-        doSomething:doSomething,
-        doAnother:doAnother,
-    };
-}
-var foo = CoolModule();
-foo.doSomething();
-foo.doAnother();
+<pre><code>(function sleep(x){
+    console.log(&#39;I want &#39;+x);
+})(&#39;sleep&#39;);
 </code></pre>
 
 

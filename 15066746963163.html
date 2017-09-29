@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  学习笔记
+  第二章：词法作用域 - 学习笔记
   
   </title>
  <meta name="description" content="">
@@ -135,48 +135,78 @@
             </div>
             <div class="large-9 medium-9 columns">
 
- 
+ <div class="markdown-body">
+<h1>第二章：词法作用域</h1>
 
+<p>1、词法阶段<br/>
+* 作用域查找会在找到第一个匹配的标识符时停止。在多层的嵌套作用域中可以定义同名的标识符，这叫做”遮蔽效应“。<br/>
+* 全局变量会自动成为全局对象（比如浏览器中的window对象）的属性，因此可以不直接通过全局对象的此法名称，而是间接地通过对全局对象属性的引用来对齐进行访问。window.a 通过这种技术可以访问哪些被同名变量所遮蔽的全局变量。而非全局的变量如果被遮蔽了，就无法被访问到了。</p>
 
-	
-		<div class="markdown-body">
-		<h1>关于apply() call()</h1>
-
-		<p>call和apply都是为了改变this而存在的，即改变函数内部的this指向。或者说改变某个函数运行时的上下文。<br/>
-<strong>注：</strong>js的一个特点，函数存在【定义时上下文】【运行时上下文】以及【上下文是可以改变的】</p>
-
-<p>一些常用用法（使用自己没有，但是别人有的方法）</p>
-
-<ol>
-<li><p>数组之间追加<br/>
+<p>2、欺骗词法<br/>
+2.1、eval()<br/>
 <code><br/>
-var arr1 = [1,2,3];<br/>
-var arr2 = [a,b,c];<br/>
-Array.prototype.push.apply(arr1,arr2);<br/>
-</code></p></li>
-<li><p>获取数组中的最大值和最小值<br/>
-<code><br/>
-var numbers = [11,23,13,4,9]<br/>
-var maxNumber = Math.max.apply(Math,numbers);<br/>
-</code></p></li>
-<li><p>验证是否是数组<br/>
-<code><br/>
-function isArray(obj){<br/>
-return object.prototype.toString().call(obj)===&quot;[object Array]&quot;<br/>
+function foo(str,a){<br/>
+    eval(str);//欺骗！<br/>
+    console.log(b,a);<br/>
 }<br/>
-</code></p></li>
-<li><p>类（伪）数组使用数组方法<br/>
+var b=1;<br/>
+foo(&quot;var b=3;&quot;,1);<br/>
+</code><br/>
+2.2、with()<br/>
 <code><br/>
-var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*&quot;))<br/>
-</code></p></li>
-</ol>
+function foo(obj){<br/>
+    with(obj){<br/>
+        a = 2;<br/>
+    }<br/>
+}<br/>
+var o1 = {a:3};<br/>
+var o2 = {b:3};<br/>
+foo(o1);<br/>
+console.log(o1.a);//2<br/>
+foo(o2);<br/>
+console.log(o2.a);//undefined<br/>
+console.log(a);//2 a被泄露到全局作用域上了<br/>
+</code></p>
+
+<p><strong>不推荐使用eval()和with</strong></p>
 
 
-		</div>
-	
+</div>
 
-  
-  
+<br /><br />
+<hr />
+
+<div class="row clearfix">
+  <div class="large-6 columns">
+	<div class="text-left" style="padding:15px 0px;">
+		
+	</div>
+  </div>
+  <div class="large-6 columns">
+	<div class="text-right" style="padding:15px 0px;">
+		
+	        <a href="14978876951045.html" 
+	        title="Next Post: 第一章：作用域是什么">第一章：作用域是什么 &raquo;</a>
+	    
+	</div>
+  </div>
+</div>
+
+<div class="row">
+<div style="padding:0px 0.93em;" class="share-comments">
+
+</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		var currentURL = '15066746963163.html';
+		$('#side-nav a').each(function(){
+			if($(this).attr('href') == currentURL){
+				$(this).parent().addClass('active');
+			}
+		});
+	});
+</script>  
 </div></div>
 
 

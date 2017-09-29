@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  你不知道的js - MWeb学习笔记
+  你不知道的js - 学习笔记
   
   </title>
  <meta name="description" content="">
- <link href="atom.xml" rel="alternate" title="MWeb学习笔记" type="application/atom+xml">
+ <link href="atom.xml" rel="alternate" title="学习笔记" type="application/atom+xml">
     <link rel="stylesheet" href="asset/css/foundation.min.css" />
     <link rel="stylesheet" href="asset/css/docs.css" />
 
@@ -29,13 +29,13 @@
 <nav class="top-bar docs-bar hide-for-small" data-topbar>
 
 <div id="header">
-    <h1><a href="index.html">MWeb学习笔记</a></h1>
+    <h1><a href="index.html">学习笔记</a></h1>
 </div>
 
 </nav>
         <nav class="tab-bar show-for-small">
   <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
-    <span> &nbsp; MWeb学习笔记</span>
+    <span> &nbsp; 学习笔记</span>
   </a>
 </nav>
 
@@ -47,7 +47,9 @@
         <li><label>你不知道的js</label></li>
 
           
-            <li><a title="第一章：作用域是什么&第二章：词法作用域" href="14978876951045.html">第一章：作用域是什么&第二章：词法作用域</a></li>
+            <li><a title="第二章：词法作用域" href="15066746963163.html">第二章：词法作用域</a></li>
+          
+            <li><a title="第一章：作用域是什么" href="14978876951045.html">第一章：作用域是什么</a></li>
           
             <li><a title="第三章：函数作用域和块作用域" href="14978935513574.html">第三章：函数作用域和块作用域</a></li>
           
@@ -96,7 +98,9 @@
                     
                       <li class="side-title"><span>你不知道的js</span></li>
                         
-                          <li><a title="第一章：作用域是什么&第二章：词法作用域" href="14978876951045.html">第一章：作用域是什么&第二章：词法作用域</a></li>
+                          <li><a title="第二章：词法作用域" href="15066746963163.html">第二章：词法作用域</a></li>
+                        
+                          <li><a title="第一章：作用域是什么" href="14978876951045.html">第一章：作用域是什么</a></li>
                         
                           <li><a title="第三章：函数作用域和块作用域" href="14978935513574.html">第三章：函数作用域和块作用域</a></li>
                         
@@ -136,12 +140,36 @@
 
 	
 		<div class="markdown-body">
-		<h1>Promise</h1>
+		<h1>关于apply() call()</h1>
 
-		<p>promise的内容分为构造函数、实例方法和静态方法<br/>
-* 1个构造函数：new Promise<br/>
-* 2个实例方法：.then和.catch<br/>
-* 4个静态方法：Promise.all、Promise.race(不常用)、Promise.resolve和Promise.reject</p>
+		<p>call和apply都是为了改变this而存在的，即改变函数内部的this指向。或者说改变某个函数运行时的上下文。<br/>
+<strong>注：</strong>js的一个特点，函数存在【定义时上下文】【运行时上下文】以及【上下文是可以改变的】</p>
+
+<p>一些常用用法（使用自己没有，但是别人有的方法）</p>
+
+<ol>
+<li><p>数组之间追加<br/>
+<code><br/>
+var arr1 = [1,2,3];<br/>
+var arr2 = [a,b,c];<br/>
+Array.prototype.push.apply(arr1,arr2);<br/>
+</code></p></li>
+<li><p>获取数组中的最大值和最小值<br/>
+<code><br/>
+var numbers = [11,23,13,4,9]<br/>
+var maxNumber = Math.max.apply(Math,numbers);<br/>
+</code></p></li>
+<li><p>验证是否是数组<br/>
+<code><br/>
+function isArray(obj){<br/>
+return object.prototype.toString().call(obj)===&quot;[object Array]&quot;<br/>
+}<br/>
+</code></p></li>
+<li><p>类（伪）数组使用数组方法<br/>
+<code><br/>
+var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*&quot;))<br/>
+</code></p></li>
+</ol>
 
 
 		</div>

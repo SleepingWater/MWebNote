@@ -140,36 +140,31 @@
 
 	
 		<div class="markdown-body">
-		<h1>关于apply() call()</h1>
+		<h1>第三章</h1>
 
-		<p>call和apply都是为了改变this而存在的，即改变函数内部的this指向。或者说改变某个函数运行时的上下文。<br/>
-<strong>注：</strong>js的一个特点，函数存在【定义时上下文】【运行时上下文】以及【上下文是可以改变的】</p>
+		<h3 id="toc_0">3.3 数量类型</h3>
 
-<p>一些常用用法（使用自己没有，但是别人有的方法）</p>
+<p>8种数据类型</p>
 
-<ol>
-<li><p>数组之间追加<br/>
-<code><br/>
-var arr1 = [1,2,3];<br/>
-var arr2 = [a,b,c];<br/>
-Array.prototype.push.apply(arr1,arr2);<br/>
-</code></p></li>
-<li><p>获取数组中的最大值和最小值<br/>
-<code><br/>
-var numbers = [11,23,13,4,9]<br/>
-var maxNumber = Math.max.apply(Math,numbers);<br/>
-</code></p></li>
-<li><p>验证是否是数组<br/>
-<code><br/>
-function isArray(obj){<br/>
-return object.prototype.toString().call(obj)===&quot;[object Array]&quot;<br/>
-}<br/>
-</code></p></li>
-<li><p>类（伪）数组使用数组方法<br/>
-<code><br/>
-var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*&quot;))<br/>
-</code></p></li>
-</ol>
+<ul>
+<li>整型（int,short,long,type）</li>
+<li>浮点型（float,double）</li>
+<li>char类型</li>
+<li>boolean型</li>
+</ul>
+
+<h3 id="toc_1">3.4 变量</h3>
+
+<p>使用关键字final定义常量</p>
+
+<h3 id="toc_2">3.5 运算符</h3>
+
+<p>如果两个操作数中有一个是double类型，另一个操作数就会转换为double类型。<br/>
+否则，如果其中一个操作数是float类型，另一个操作数就会转换为float类型。<br/>
+否则，如果其中一个操作数是long类型，另一个操作数就会转换为long类型。<br/>
+否则，两个操作数都将被转换为int类型</p>
+
+<p>枚举类型</p>
 
 
 		</div>

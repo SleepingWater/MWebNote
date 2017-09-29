@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  MWeb学习笔记
+  学习笔记
   
   </title>
  <meta name="description" content="">
- <link href="atom.xml" rel="alternate" title="MWeb学习笔记" type="application/atom+xml">
+ <link href="atom.xml" rel="alternate" title="学习笔记" type="application/atom+xml">
     <link rel="stylesheet" href="asset/css/foundation.min.css" />
     <link rel="stylesheet" href="asset/css/docs.css" />
 
@@ -29,13 +29,13 @@
 <nav class="top-bar docs-bar hide-for-small" data-topbar>
 
 <div id="header">
-    <h1><a href="index.html">MWeb学习笔记</a></h1>
+    <h1><a href="index.html">学习笔记</a></h1>
 </div>
 
 </nav>
         <nav class="tab-bar show-for-small">
   <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
-    <span> &nbsp; MWeb学习笔记</span>
+    <span> &nbsp; 学习笔记</span>
   </a>
 </nav>
 
@@ -47,7 +47,9 @@
         <li><label>你不知道的js</label></li>
 
           
-            <li><a title="第一章：作用域是什么&第二章：词法作用域" href="14978876951045.html">第一章：作用域是什么&第二章：词法作用域</a></li>
+            <li><a title="第二章：词法作用域" href="15066746963163.html">第二章：词法作用域</a></li>
+          
+            <li><a title="第一章：作用域是什么" href="14978876951045.html">第一章：作用域是什么</a></li>
           
             <li><a title="第三章：函数作用域和块作用域" href="14978935513574.html">第三章：函数作用域和块作用域</a></li>
           
@@ -96,7 +98,9 @@
                     
                       <li class="side-title"><span>你不知道的js</span></li>
                         
-                          <li><a title="第一章：作用域是什么&第二章：词法作用域" href="14978876951045.html">第一章：作用域是什么&第二章：词法作用域</a></li>
+                          <li><a title="第二章：词法作用域" href="15066746963163.html">第二章：词法作用域</a></li>
+                        
+                          <li><a title="第一章：作用域是什么" href="14978876951045.html">第一章：作用域是什么</a></li>
                         
                           <li><a title="第三章：函数作用域和块作用域" href="14978935513574.html">第三章：函数作用域和块作用域</a></li>
                         
@@ -136,30 +140,43 @@
 
 	
 		<div class="markdown-body">
-		<h1>第三章：函数作用域和块作用域</h1>
+		<h1>第一章：作用域是什么</h1>
 
-		<ul>
-<li>第三方库通常会在全局作用域中声明一个名字足够独特的变量，通常是一个对象。这个对象被用作库的命名空间。</li>
-<li><p>函数表达式。</p>
+		<p>1、编译原理</p>
 
-<pre><code>var a = 2;
-(function(def){
-    def(window)
-})(function def(global){
-    var a = 3;
-    console.log(a);//3
-    console.log(global.a);//2
-})  
-</code></pre></li>
-<li><p>块作用域</p>
+<p>程序中的一段源代码执行之前会经历三个步骤</p>
 
 <ol>
-<li>with</li>
-<li>try/catch</li>
-<li>let</li>
-<li>const</li>
-</ol></li>
-</ul>
+<li>分词/词法分析</li>
+<li>解析/语法分析</li>
+<li>代码生成</li>
+</ol>
+
+<p>对于JavaScript来说，大部分情况下编译发生在代码执行前的几微秒（甚至更短）</p>
+
+<p>2、理解作用域</p>
+
+<p>2.1、参与处理过程的演员们</p>
+
+<ol>
+<li>引擎</li>
+<li>编译器</li>
+<li>作用域</li>
+</ol>
+
+<p>2.2、对话</p>
+
+<p>可以合理地假设编译器所产生的代码能够用下面的伪代码进行概括：”为一个变量分配内存，将其命名为a，然后将2保存进这个变量。“然后这并不完全正确。<br/>
+事实上会进行如下操作<br/>
+1. 遇到var a，编译器会询问作用域是否已经有一个该名称的变量存在于同一个作用域的集合中。如果是编译器会忽略该声明，继续进行编译；否则它会要求作用域在当前作用域的集合中声明一个新的变量，并命名为a。<br/>
+2. 在运行时引擎会在作用域中查找该变量，如果能找到就给它赋值。</p>
+
+<p>2.3编译器有话说<br/>
+LHS和RHS<br/>
+异常：如果RHS没有找到某个变量会抛出异常，如果LHS没有找到某个变量，会创建一个该名称的变量。</p>
+
+<p>3、作用域嵌套<br/>
+当前作用域没有找到某个变量时，引擎会在外层嵌套的作用域中继续查找。</p>
 
 
 		</div>
