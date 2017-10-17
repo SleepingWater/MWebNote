@@ -47,8 +47,6 @@
         <li><label>你不知道的js</label></li>
 
           
-            <li><a title="第一章：作用域是什么" href="15066746963163.html">第一章：作用域是什么</a></li>
-          
             <li><a title="第二章：词法作用域" href="14978876951045.html">第二章：词法作用域</a></li>
           
             <li><a title="第三章：函数作用域和块作用域" href="14978935513574.html">第三章：函数作用域和块作用域</a></li>
@@ -62,6 +60,8 @@
             <li><a title="关于apply() call()" href="14985664640586.html">关于apply() call()</a></li>
           
             <li><a title="Promise" href="15021077667841.html">Promise</a></li>
+          
+            <li><a title="第一章：作用域是什么" href="15066746963163.html">第一章：作用域是什么</a></li>
           
 
       
@@ -78,6 +78,8 @@
 
           
             <li><a title="第三章 Java的基本程序设计结构" href="15066269056845.html">第三章 Java的基本程序设计结构</a></li>
+          
+            <li><a title="第四章" href="15066839297532.html">第四章</a></li>
           
 
       
@@ -98,8 +100,6 @@
                     
                       <li class="side-title"><span>你不知道的js</span></li>
                         
-                          <li><a title="第一章：作用域是什么" href="15066746963163.html">第一章：作用域是什么</a></li>
-                        
                           <li><a title="第二章：词法作用域" href="14978876951045.html">第二章：词法作用域</a></li>
                         
                           <li><a title="第三章：函数作用域和块作用域" href="14978935513574.html">第三章：函数作用域和块作用域</a></li>
@@ -114,6 +114,8 @@
                         
                           <li><a title="Promise" href="15021077667841.html">Promise</a></li>
                         
+                          <li><a title="第一章：作用域是什么" href="15066746963163.html">第一章：作用域是什么</a></li>
+                        
 
                     
                       <li class="side-title"><span>js设计模式</span></li>
@@ -125,6 +127,8 @@
                       <li class="side-title"><span>Core Java 卷1</span></li>
                         
                           <li><a title="第三章 Java的基本程序设计结构" href="15066269056845.html">第三章 Java的基本程序设计结构</a></li>
+                        
+                          <li><a title="第四章" href="15066839297532.html">第四章</a></li>
                         
 
                     
@@ -140,45 +144,12 @@
 
 	
 		<div class="markdown-body">
-		<h1>关于apply() call()</h1>
+		<h1>Promise</h1>
 
-		<p>call和apply都是为了改变this而存在的，即改变函数内部的this指向。或者说改变某个函数运行时的上下文。<br/>
-<strong>注：</strong>js的一个特点，函数存在【定义时上下文】【运行时上下文】以及【上下文是可以改变的】</p>
-
-<p>一些常用用法（使用自己没有，但是别人有的方法）</p>
-
-<ol>
-<li>数组之间追加</li>
-</ol>
-
-<pre><code>var arr1 = [1,2,3];
-var arr2 = [a,b,c];
-Array.prototype.push.apply(arr1,arr2);
-</code></pre>
-
-<ol>
-<li>获取数组中的最大值和最小值</li>
-</ol>
-
-<pre><code>var numbers = [11,23,13,4,9]
-var maxNumber = Math.max.apply(Math,numbers);
-</code></pre>
-
-<ol>
-<li>验证是否是数组</li>
-</ol>
-
-<pre><code>function isArray(obj){
-    return object.prototype.toString().call(obj)===&quot;[object Array]&quot;
-}
-</code></pre>
-
-<ol>
-<li>类（伪）数组使用数组方法</li>
-</ol>
-
-<pre><code>var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*&quot;))
-</code></pre>
+		<p>promise的内容分为构造函数、实例方法和静态方法<br/>
+* 1个构造函数：new Promise<br/>
+* 2个实例方法：.then和.catch<br/>
+* 4个静态方法：Promise.all、Promise.race(不常用)、Promise.resolve和Promise.reject</p>
 
 
 		</div>
