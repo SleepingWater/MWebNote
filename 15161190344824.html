@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  关于apply() call() - 学习笔记
+  从数据结构及算法理论层面讨论MySQL数据库索引的数理基础 - 学习笔记
   
   </title>
  <meta name="description" content="">
@@ -154,45 +154,45 @@
             <div class="large-9 medium-9 columns">
 
  <div class="markdown-body">
-<h1>关于apply() call()</h1>
+<h1>从数据结构及算法理论层面讨论MySQL数据库索引的数理基础</h1>
 
-<p>call和apply都是为了改变this而存在的，即改变函数内部的this指向。或者说改变某个函数运行时的上下文。<br/>
-<strong>注：</strong>js的一个特点，函数存在【定义时上下文】【运行时上下文】以及【上下文是可以改变的】</p>
+<p>MySQL数据库支持多种索引类型，如BTree索引，哈希索引，全文索引等等。平常使用MySQL时主要打交道的索引是BTree索引。</p>
 
-<p>一些常用用法（使用自己没有，但是别人有的方法）</p>
+<h3 id="toc_0">1.索引的本质</h3>
 
-<ol>
-<li>数组之间追加</li>
-</ol>
+<ul>
+<li>MySQL官方对索引的定义为：<strong>索引（Index）是帮助MySQL高效获取数据的数据结构</strong>。</li>
+<li>提取句子主干，就可以得到索引的本质：索引是数据结构。</li>
+<li>查找算法：顺序查找、二分查找、二叉树查找等。但是每种查找算法都只能应用于特定的数据结构之上，例如二分查找要求被检索数据有序，而二叉树查找只能应用于二叉查找树上，但是数据本身的组织结构不可能完全满足各种数据结构。所以，<strong>在数据之外，数据库系统还维护着满足特定查找算法的数据结构，这些数据结构以某种方式引用（指向）数据，这样就可以在这些数据结构上实现高级查找算法。这种数据结构，就是索引</strong>。</li>
+</ul>
 
-<pre><code>var arr1 = [1,2,3];
-var arr2 = [a,b,c];
-Array.prototype.push.apply(arr1,arr2);
-</code></pre>
+<p><img src="media/15161190344824/15161201436062.jpg" alt=""/></p>
 
-<ol>
-<li>获取数组中的最大值和最小值</li>
-</ol>
+<h3 id="toc_1">2.B-Tree</h3>
 
-<pre><code>var numbers = [11,23,13,4,9]
-var maxNumber = Math.max.apply(Math,numbers);
-</code></pre>
+<p><img src="media/15161190344824/15161202731296.jpg" alt=""/></p>
 
-<ol>
-<li>验证是否是数组</li>
-</ol>
+<p>由于B-Tree的特性，在B-Tree中按key检索数据的算法非常直观：首先从根节点进行二分查找，如果找到则返回对应节点的data，否则对相应区间的指针指向的节点递归进行查找，直到找到节点或找到null指针，前者查找成功，后者查找失败。</p>
 
-<pre><code>function isArray(obj){
-    return object.prototype.toString().call(obj)===&quot;[object Array]&quot;
-}
-</code></pre>
+<h3 id="toc_2">3.B+Tree</h3>
+
+<p>与B-Tree相比，B+Tree有以下不同点：</p>
 
 <ol>
-<li>类（伪）数组使用数组方法</li>
+<li>每个节点的指针上限为2d而不是2d+1。</li>
+<li>内节点不存储data，只存储key；叶子节点不存储指针。</li>
 </ol>
 
-<pre><code>var domNodes = Array.prototype.slice.apply(document.getElementsByTagName(&quot;*&quot;))
-</code></pre>
+<p><img src="media/15161190344824/15161208157034.jpg" alt=""/></p>
+
+<p>由于并不是所有节点都具有相同的域，因此B+Tree中叶节点和内节点一般大小不同。这点与B-Tree不同，虽然B-Tree中不同节点存放的key和指针可能数量不一致，但是每个节点的域和上限是一致的，所以在实现中B-Tree往往对每个节点申请同等大小的空间。<br/>
+一般来说，B+Tree比B-Tree更适合实现外存储索引结构，具体原因与外存储器原理及计算机存取原理有关，将在下面讨论。</p>
+
+<h3 id="toc_3">4.带有顺序访问指针的B+Tree</h3>
+
+<p><img src="media/15161190344824/15161219444826.jpg" alt=""/></p>
+
+<p>如图所示，在B+Tree的每个叶子节点增加一个指向相邻叶子节点的指针，就形成了带有顺序访问指针的B+Tree。做这个优化的目的是为了提高区间访问的性能，例如图4中如果要查询key为从18到49的所有数据记录，当找到18后，只需顺着节点和指针顺序遍历就可以一次性访问到所有数据节点，极大提到了区间查询效率。</p>
 
 
 </div>
@@ -204,16 +204,13 @@ var maxNumber = Math.max.apply(Math,numbers);
   <div class="large-6 columns">
 	<div class="text-left" style="padding:15px 0px;">
 		
-	        <a href="14980689294470.html"  title="Previous Post: 第一章：关于this">&laquo; 第一章：关于this</a>
+	        <a href="15066839297532.html"  title="Previous Post: 第四章 对象与类">&laquo; 第四章 对象与类</a>
 	    
 	</div>
   </div>
   <div class="large-6 columns">
 	<div class="text-right" style="padding:15px 0px;">
 		
-	        <a href="14996054012366.html" 
-	        title="Next Post: 单例模式">单例模式 &raquo;</a>
-	    
 	</div>
   </div>
 </div>
@@ -225,7 +222,7 @@ var maxNumber = Math.max.apply(Math,numbers);
 </div>
 <script type="text/javascript">
 	$(function(){
-		var currentURL = '14985664640586.html';
+		var currentURL = '15161190344824.html';
 		$('#side-nav a').each(function(){
 			if($(this).attr('href') == currentURL){
 				$(this).parent().addClass('active');

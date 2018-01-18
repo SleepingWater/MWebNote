@@ -79,7 +79,15 @@
           
             <li><a title="第三章 Java的基本程序设计结构" href="15066269056845.html">第三章 Java的基本程序设计结构</a></li>
           
-            <li><a title="第四章" href="15066839297532.html">第四章</a></li>
+            <li><a title="第四章 对象与类" href="15066839297532.html">第四章 对象与类</a></li>
+          
+
+      
+        <li class="divider"></li>
+        <li><label>mysql</label></li>
+
+          
+            <li><a title="从数据结构及算法理论层面讨论MySQL数据库索引的数理基础" href="15161190344824.html">从数据结构及算法理论层面讨论MySQL数据库索引的数理基础</a></li>
           
 
       
@@ -128,7 +136,13 @@
                         
                           <li><a title="第三章 Java的基本程序设计结构" href="15066269056845.html">第三章 Java的基本程序设计结构</a></li>
                         
-                          <li><a title="第四章" href="15066839297532.html">第四章</a></li>
+                          <li><a title="第四章 对象与类" href="15066839297532.html">第四章 对象与类</a></li>
+                        
+
+                    
+                      <li class="side-title"><span>mysql</span></li>
+                        
+                          <li><a title="从数据结构及算法理论层面讨论MySQL数据库索引的数理基础" href="15161190344824.html">从数据结构及算法理论层面讨论MySQL数据库索引的数理基础</a></li>
                         
 
                     
@@ -144,9 +158,57 @@
 
 	
 		<div class="markdown-body">
-		<h1>第四章</h1>
+		<h1>第四章 对象与类</h1>
 
-		
+		<p>一个对象变量并没有实际包含一个对象，而仅仅引用一个对象。<br/>
+可以显示地讲对象变量设置为null，表明这个对象变量目前没有引用任何对象。<br/>
+如果将一个方法应用于一个值为null的对象上，就会产生错误。</p>
+
+<pre><code>birthday = null;
+String s = birthday.toString();//runtime error!
+</code></pre>
+
+<p>4.3.4 关于构造器</p>
+
+<ul>
+<li>构造器与类同名</li>
+<li>每个类可以有一个以上的构造器</li>
+<li>构造器可以有0个、1个或多个参数</li>
+<li>构造器没有返回值</li>
+<li>构造器总是伴随着new关键字调用</li>
+</ul>
+
+<p>4.3.5 隐示参数和显示参数<br/>
+this表示隐示参数</p>
+
+<h3 id="toc_0">4.4 静态域与静态方法</h3>
+
+<p>4.4.1 静态域<br/>
+这里给Employee类添加一个实例域id和静态域nextId</p>
+
+<pre><code>class Employee{
+    private static int nextId = 1;
+    private int id;
+    ...
+}
+</code></pre>
+
+<p>如果有1000个Employee类的对象，则有1000个实例域id，但是只有一个静态域nextId。即使没有Employee类的对象，静态域nextId也存在，它属于类，不属于任何独立的对象。</p>
+
+<p>4.4.2 静态常量<br/>
+静态变量使用的较少，但静态常量使用的比较多。比如Math类中的PI</p>
+
+<pre><code>public class Math{
+    ...
+    public static final double PI = 3.14159265388979323846;
+    ...
+}
+</code></pre>
+
+<p>4.4.3 静态方法<br/>
+静态方法是一种不能向对象实施操作的方法。例如，Math类的pow方法就是一个静态方法。表达式<br/>
+<code>Math.pow(x,a)</code>计算幂。在运算时，不适用任何Math对象。换句话说，没有隐式的参数this。</p>
+
 
 		</div>
 	
