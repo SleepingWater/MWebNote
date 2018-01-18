@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  学习笔记
+  索引使用策略及优化 - 学习笔记
   
   </title>
  <meta name="description" content="">
@@ -161,24 +161,91 @@
             </div>
             <div class="large-9 medium-9 columns">
 
- 
+ <div class="markdown-body">
+<h1>索引使用策略及优化</h1>
+
+<p>MySQL的优化主要分为结构优化（Scheme optimization）和查询优化（Query optimization）。本章讨论的高性能索引策略主要属于结构优化范畴。</p>
+
+<p>示例数据库<br/>
+<img src="media/15162949131559/15162950373255.jpg" alt=""/></p>
+
+<p><em>注意：这里有一点需要注意，理论上索引对顺序是敏感的，但是由于MySQL的查询优化器会自动调整where子句的条件顺序以使用适合的索引</em></p>
+
+<h3 id="toc_0">1.最左前缀原理与相关优化</h3>
+
+<ol>
+<li>全列匹配。（索引可以被用到）</li>
+<li>最左前缀匹配。（索引第一列起效）</li>
+<li>查询条件用到了索引中列的精确匹配，但是中间某个条件未提供。（结果和情况二相同。可以使用一种称之为“隔离列”的优化方法，如果中间条件有限，将中间条件用in）</li>
+<li>查询条件没有指定索引第一列。（索引不起效）</li>
+<li>范围查询（范围列可以用到索引（必须是最左前缀），但是范围列后面的列无法用到索引。同时，索引最多用于一个范围列，因此如果查询条件中有两个范围列则无法全用到索引。<em>这里没明白</em>）<em>这里特别要说明MySQL一个有意思的地方，那就是仅用explain可能无法区分范围索引和多值匹配，因为在type中这两者都显示为range。同时，用了“between”并不意味着就是范围查询，</em></li>
+<li>查询条件中含有函数或表达式。（索引不起效）</li>
+</ol>
+
+<h3 id="toc_1">2.索引选择性与前缀索引</h3>
+
+<p>既然索引可以加快查询速度，那么是不是只要是查询语句需要，就建上索引？答案是否定的。因为索引虽然加快了查询速度，但索引也是有代价的：索引文件本身要消耗存储空间，同时索引会加重插入、删除和修改记录时的负担，另外，MySQL在运行时也要消耗资源维护索引，因此索引并不是越多越好。一般两种情况下不建议建索引。</p>
+
+<ol>
+<li>第一种情况是表记录比较少，例如一两千条甚至只有几百条记录的表，没必要建索引，让查询做全表扫描就好了。至于多少条记录才算多，这个个人有个人的看法，我个人的经验是以2000作为分界线，记录数不超过 2000可以考虑不建索引，超过2000条可以酌情考虑索引。</li>
+<li>另一种不建议建索引的情况是索引的选择性较低。所谓索引的选择性（Selectivity），是指不重复的索引值（也叫基数，Cardinality）与表记录数（#T）的比值：
+Index Selectivity = Cardinality / #T
+显然选择性的取值范围为(0, 1]，选择性越高的索引价值越大，这是由B+Tree的性质决定的。</li>
+</ol>
+
+<p>有一种与索引选择性有关的索引优化策略叫做前缀索引，就是用列的前缀代替整个列作为索引key，当前缀长度合适时，可以做到既使得前缀索引的选择性接近全列索引，同时因为索引key变短而减少了索引文件的大小和维护开销。<br/>
+如果频繁按名字搜索员工，这样显然效率很低，因此我们可以考虑建索引。有两种选择，建&lt;first_name&gt;或&lt;first_name, last_name&gt;，更优秀的方案是&lt;first_name, left(last_name, 3)&gt;</p>
+
+<p><em>前缀索引兼顾索引大小和查询速度，但是其缺点是不能用于ORDER BY和GROUP BY操作，也不能用于Covering index（即当索引本身包含查询所需全部数据时，不再访问数据文件本身）。</em></p>
+
+<h3 id="toc_2">3.InnoDB的主键选择与插入优化</h3>
+
+<p>在使用InnoDB存储引擎时，如果没有特别的需要，请永远使用一个与业务无关的自增字段作为主键。<br/>
+经常看到有帖子或博客讨论主键选择问题，有人建议使用业务无关的自增主键，有人觉得没有必要，完全可以使用如学号或身份证号这种唯一字段作为主键。不论支持哪种论点，大多数论据都是业务层面的。如果从数据库索引优化角度看，使用InnoDB引擎而不使用自增主键绝对是一个糟糕的主意。<br/>
+上文讨论过InnoDB的索引实现，InnoDB使用聚集索引，数据记录本身被存于主索引（一颗B+Tree）的叶子节点上。这就要求同一个叶子节点内（大小为一个内存页或磁盘页）的各条数据记录按主键顺序存放，因此每当有一条新的记录插入时，MySQL会根据其主键将其插入适当的节点和位置，如果页面达到装载因子（InnoDB默认为15/16），则开辟一个新的页（节点）。<br/>
+如果表使用自增主键，那么每次插入新的记录，记录就会顺序添加到当前索引节点的后续位置，当一页写满，就会自动开辟一个新的页。</p>
+
+<p><img src="media/15162949131559/15162979901459.jpg" alt=""/><br/>
+这样就会形成一个紧凑的索引结构，近似顺序填满。由于每次插入时也不需要移动已有数据，因此效率很高，也不会增加很多开销在维护索引上。<br/>
+如果使用非自增主键（如果身份证号或学号等），由于每次插入主键的值近似于随机，因此每次新纪录都要被插到现有索引页得中间某个位置：<br/>
+<img src="media/15162949131559/15162979999782.jpg" alt=""/></p>
 
 
-	
-		<div class="markdown-body">
-		<h1>Promise</h1>
+</div>
 
-		<p>promise的内容分为构造函数、实例方法和静态方法<br/>
-* 1个构造函数：new Promise<br/>
-* 2个实例方法：.then和.catch<br/>
-* 4个静态方法：Promise.all、Promise.race(不常用)、Promise.resolve和Promise.reject</p>
+<br /><br />
+<hr />
 
+<div class="row clearfix">
+  <div class="large-6 columns">
+	<div class="text-left" style="padding:15px 0px;">
+		
+	        <a href="15162928494857.html"  title="Previous Post: 结合MyISAM和InnDB存储引擎介绍非聚集索引和聚集索引两种不同的索引实现形式">&laquo; 结合MyISAM和InnDB存储引擎介绍非聚集索引和聚集索引两种不同的索引实现形式</a>
+	    
+	</div>
+  </div>
+  <div class="large-6 columns">
+	<div class="text-right" style="padding:15px 0px;">
+		
+	</div>
+  </div>
+</div>
 
-		</div>
-	
+<div class="row">
+<div style="padding:0px 0.93em;" class="share-comments">
 
-  
-  
+</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		var currentURL = '15162949131559.html';
+		$('#side-nav a').each(function(){
+			if($(this).attr('href') == currentURL){
+				$(this).parent().addClass('active');
+			}
+		});
+	});
+</script>  
 </div></div>
 
 
