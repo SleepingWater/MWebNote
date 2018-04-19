@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  你不知道的js - 学习笔记
+  结合MyISAM和InnDB存储引擎介绍非聚集索引和聚集索引两种不同的索引实现形式 - 学习笔记
   
   </title>
  <meta name="description" content="">
@@ -149,56 +149,73 @@
             </div>
             <div class="large-9 medium-9 columns">
 
- 
+ <div class="markdown-body">
+<h1>结合MyISAM和InnDB存储引擎介绍非聚集索引和聚集索引两种不同的索引实现形式</h1>
+
+<p>在MySQL中，索引属于存储引擎级别的概念，不同存储引擎对索引的实现方式是不同的，下面主要讨论MyISAM和InnoDB两个存储引擎的索引实现方式。</p>
+
+<h3 id="toc_0">1.MyISAM索引实现</h3>
+
+<p>MyISAM引擎使用B+Tree作为索引结构，叶节点的data域存放的是数据记录的地址。下图是MyISAM索引的原理图：<img src="media/15162928494857/15162929235762.jpg" alt=""/></p>
+
+<p>这里设表一共有三列，假设我们以Col1为主键，则图8是一个MyISAM表的主索引（Primary key）示意。可以看出MyISAM的索引文件仅仅保存数据记录的地址。<strong>在MyISAM中，主索引和辅助索引（Secondary key）在结构上没有任何区别，只是主索引要求key是唯一的，而辅助索引的key可以重复。</strong>如果我们在Col2上建立一个辅助索引，则此索引的结构如下图所示：<br/>
+<img src="media/15162928494857/15162944444395.jpg" alt=""/><br/>
+同样也是一颗B+Tree，data域保存数据记录的地址。因此，<strong>MyISAM中索引检索的算法为首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其data域的值，然后以data域的值为地址，读取相应数据记录。</strong><br/>
+MyISAM的索引方式也叫做“非聚集”的，之所以这么称呼是为了与InnoDB的聚集索引区分。</p>
+
+<h3 id="toc_1">2.InnoDB索引实现</h3>
+
+<p>虽然InnoDB也使用B+Tree作为索引结构，但具体实现方式却与MyISAM截然不同。<br/>
+<strong>第一个重大区别是InnoDB的数据文件本身就是索引文件</strong>。从上文知道，MyISAM索引文件和数据文件是分离的，索引文件仅保存数据记录的地址。而在InnoDB中，表数据文件本身就是按B+Tree组织的一个索引结构，这棵树的叶节点data域保存了完整的数据记录。这个索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引。</p>
+
+<p><img src="media/15162928494857/15162946040460.jpg" alt=""/><br/>
+可以看到叶节点包含了完整的数据记录。这种索引叫做聚集索引。因为InnoDB的数据文件本身要按主键聚集，所以InnoDB要求表必须有主键（MyISAM可以没有），如果没有显式指定，则MySQL系统会自动选择一个可以唯一标识数据记录的列作为主键，如果不存在这种列，则MySQL自动为InnoDB表生成一个隐含字段作为主键，这个字段长度为6个字节，类型为长整形。<br/>
+<strong>第二个与MyISAM索引的不同是InnoDB的辅助索引data域存储相应记录主键的值而不是地址。</strong>换句话说，InnoDB的所有辅助索引都引用主键作为data域。例如，图11为定义在Col3上的一个辅助索引：<br/>
+<img src="media/15162928494857/15162946833768.jpg" alt=""/></p>
+
+<p><strong>聚集索引这种实现方式使得按主键的搜索十分高效，但是辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键，然后用主键到主索引中检索获得记录。</strong></p>
+
+<p><em>了解不同存储引擎的索引实现方式对于正确使用和优化索引都非常有帮助，例如知道了InnoDB的索引实现后，就很容易明白为什么不建议使用过长的字段作为主键，因为所有辅助索引都引用主索引，过长的主索引会令辅助索引变得过大。再例如，用非单调的字段作为主键在InnoDB中不是个好主意，因为InnoDB数据文件本身是一颗B+Tree，非单调的主键会造成在插入新记录时数据文件为了维持B+Tree的特性而频繁的分裂调整，十分低效，而使用自增字段作为主键则是一个很好的选择。</em></p>
 
 
-	
-		<div class="markdown-body">
-		<h1>第五章：作用域闭包</h1>
+</div>
 
-		<ul>
-<li>对函数类型的值进行传递时，保留对它被声明的位置所处的作用域的引用。</li>
-<li>只要使用了回调函数，实际上就是在使用闭包！so回调函数丢失外部函数调用对象</li>
-</ul>
+<br /><br />
+<hr />
 
-<pre><code>for (var i = 1; i &lt;= 5; i++) {
-    setTimeout( function timer(){
-        console.log(i);
-    },i*1000);
-}
-//每隔1秒输出6
-</code></pre>
+<div class="row clearfix">
+  <div class="large-6 columns">
+	<div class="text-left" style="padding:15px 0px;">
+		
+	        <a href="15241259610738.html"  title="Previous Post: 从数据结构及算法理论层面讨论MySQL数据库索引的数理基础">&laquo; 从数据结构及算法理论层面讨论MySQL数据库索引的数理基础</a>
+	    
+	</div>
+  </div>
+  <div class="large-6 columns">
+	<div class="text-right" style="padding:15px 0px;">
+		
+	        <a href="15241259944269.html" 
+	        title="Next Post: 索引使用策略及优化">索引使用策略及优化 &raquo;</a>
+	    
+	</div>
+  </div>
+</div>
 
-<ul>
-<li>块作用域。let劫持一个块儿并且就在这个块儿中声明一个变量，这实质上将块儿变成了一个我们可以闭包的作用域。</li>
-<li>模块</li>
-</ul>
+<div class="row">
+<div style="padding:0px 0.93em;" class="share-comments">
 
-<pre><code>function CoolModule(){
-    var something = &quot;cool&quot;;
-    var another = [1,2,3,4,5];
-    function doSomething(){
-        console.log(something);
-    }
-    function doAnother(){
-        console.log(another.join(&quot;,&quot;));
-    }
-    return {
-        doSomething:doSomething,
-        doAnother:doAnother,
-    };
-}
-var foo = CoolModule();
-foo.doSomething();
-foo.doAnother();
-</code></pre>
-
-
-		</div>
-	
-
-  
-  
+</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		var currentURL = '15241259766481.html';
+		$('#side-nav a').each(function(){
+			if($(this).attr('href') == currentURL){
+				$(this).parent().addClass('active');
+			}
+		});
+	});
+</script>  
 </div></div>
 
 

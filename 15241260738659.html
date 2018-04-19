@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  你不知道的js - 学习笔记
+  模式匹配类型使用扩展的正则表达式 - 学习笔记
   
   </title>
  <meta name="description" content="">
@@ -149,56 +149,61 @@
             </div>
             <div class="large-9 medium-9 columns">
 
- 
+ <div class="markdown-body">
+<h1>模式匹配类型使用扩展的正则表达式</h1>
 
-
-	
-		<div class="markdown-body">
-		<h1>第五章：作用域闭包</h1>
-
-		<ul>
-<li>对函数类型的值进行传递时，保留对它被声明的位置所处的作用域的引用。</li>
-<li>只要使用了回调函数，实际上就是在使用闭包！so回调函数丢失外部函数调用对象</li>
-</ul>
-
-<pre><code>for (var i = 1; i &lt;= 5; i++) {
-    setTimeout( function timer(){
-        console.log(i);
-    },i*1000);
-}
-//每隔1秒输出6
-</code></pre>
+<p>当你使用这个类型来测试一个匹配，要使用REGEXP和NOT REGEXP操作（或者RLIKE和NOT RLIKE，他们是同意词）。下面的列表描述了一些扩展正则表达式的特征：</p>
 
 <ul>
-<li>块作用域。let劫持一个块儿并且就在这个块儿中声明一个变量，这实质上将块儿变成了一个我们可以闭包的作用域。</li>
-<li>模块</li>
+<li>“.” 匹配任意单个字符。</li>
+<li>一个字符类“[...]&quot;匹配括号里的任意字符，例如，&quot;[abc]&quot;匹配“a&quot;,&quot;b&quot;,或&quot;c&quot;,要指定字符范围，可以使用“-&quot;,例如，“[a-z]&quot;匹配任意字母，而“[0-9]&quot;匹配任意数字。</li>
+<li>“<em>&quot;匹配0个或多个在它前面的东西。例如，“x</em>“匹配任意个x字符，&quot;[0-9]<em>&quot;匹配任意个数字，“.</em>&quot;匹配任意个字符。</li>
+<li>一个REGEXP模式匹配成功的条件是，模式在测试值中的任意地方匹配即可。（这与LIKE模式匹配不同，LIKE模式匹配成功需要匹配整个值）。</li>
+<li>想让模式匹配测试值的开头或结尾，可以使用“<sup>&quot;开头作为模式的开头或用“$&quot;作为模式的结尾。</sup></li>
 </ul>
 
-<pre><code>function CoolModule(){
-    var something = &quot;cool&quot;;
-    var another = [1,2,3,4,5];
-    function doSomething(){
-        console.log(something);
-    }
-    function doAnother(){
-        console.log(another.join(&quot;,&quot;));
-    }
-    return {
-        doSomething:doSomething,
-        doAnother:doAnother,
-    };
-}
-var foo = CoolModule();
-foo.doSomething();
-foo.doAnother();
+<pre><code>//找到只包含5个字符的名字
+SELECT * FROM users WHERE name REGEXP &#39;^.....$&#39;;//一个中文要三个点
+等价于
+SELECT * FROM users WHERE name REGEXP &#39;^.{5}$&#39;;
 </code></pre>
 
 
-		</div>
-	
+</div>
 
-  
-  
+<br /><br />
+<hr />
+
+<div class="row clearfix">
+  <div class="large-6 columns">
+	<div class="text-left" style="padding:15px 0px;">
+		
+	        <a href="15241259944269.html"  title="Previous Post: 索引使用策略及优化">&laquo; 索引使用策略及优化</a>
+	    
+	</div>
+  </div>
+  <div class="large-6 columns">
+	<div class="text-right" style="padding:15px 0px;">
+		
+	</div>
+  </div>
+</div>
+
+<div class="row">
+<div style="padding:0px 0.93em;" class="share-comments">
+
+</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		var currentURL = '15241260738659.html';
+		$('#side-nav a').each(function(){
+			if($(this).attr('href') == currentURL){
+				$(this).parent().addClass('active');
+			}
+		});
+	});
+</script>  
 </div></div>
 
 
