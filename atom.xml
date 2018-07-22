@@ -4,7 +4,7 @@
   <title><![CDATA[学习笔记]]></title>
   <link href="https://sleepingwater.github.io/MWebNote/atom.xml" rel="self"/>
   <link href="https://sleepingwater.github.io/MWebNote/"/>
-  <updated>2018-04-19T16:33:20+08:00</updated>
+  <updated>2018-04-19T16:35:30+08:00</updated>
   <id>https://sleepingwater.github.io/MWebNote/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -718,6 +718,103 @@ SELECT * FROM users WHERE name REGEXP &#39;^.....$&#39;;//一个中文要三个�
 等价于
 SELECT * FROM users WHERE name REGEXP &#39;^.{5}$&#39;;
 </code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[使用用户自定义变量]]></title>
+    <link href="https://sleepingwater.github.io/MWebNote/15241906586481.html"/>
+    <updated>2018-04-20T10:17:38+08:00</updated>
+    <id>https://sleepingwater.github.io/MWebNote/15241906586481.html</id>
+    <content type="html"><![CDATA[
+<pre><code>mysql&gt; SELECT @min_price:=MIN(price),@max_price:=MAX(price) FROM shop;
+mysql&gt; SELECT * FROM shop WHERE price=@min_price OR price=@max_price;
++---------+--------+-------+
+| article | dealer | price |
++---------+--------+-------+
+|    0003 | D      |  1.25 |
+|    0004 | D      | 19.95 |
++---------+--------+-------+
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[2018-04-20 ajax请求状态码返回canceled]]></title>
+    <link href="https://sleepingwater.github.io/MWebNote/15242101717003.html"/>
+    <updated>2018-04-20T15:42:51+08:00</updated>
+    <id>https://sleepingwater.github.io/MWebNote/15242101717003.html</id>
+    <content type="html"><![CDATA[
+<ul>
+<li>ajax请求被canceled是因为在ajax请求资源的时间内，后续的操作继续触发了ajax请求资源，因此请求操作被取消，所以解决问题关键就是如何防止重复发送ajax请求</li>
+<li>请求超时</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[取随机数]]></title>
+    <link href="https://sleepingwater.github.io/MWebNote/15255246642332.html"/>
+    <updated>2018-05-05T20:51:04+08:00</updated>
+    <id>https://sleepingwater.github.io/MWebNote/15255246642332.html</id>
+    <content type="html"><![CDATA[
+<ol>
+<li>如果表的数据量不大
+<code>
+select * from users order by rand() limit 10
+</code></li>
+<li>如果表的数据量很大，1的方式很慢</li>
+</ol>
+
+<pre><code>//简化版
+select * from users where id&gt;(select floor(rand()*max(id)) id from users)
+//加强版
+select * from users t1 join 
+(select round(rand()*((select max(id) from users)-(select min(id) from users)))+(select min(id) from users) id) t2 
+where t1.id&gt;t2.id order by t1.id limit 1
+</code></pre>
+
+<p>这种方式只能取一条</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[静态页面]]></title>
+    <link href="https://sleepingwater.github.io/MWebNote/15298620281679.html"/>
+    <updated>2018-06-25T01:40:28+08:00</updated>
+    <id>https://sleepingwater.github.io/MWebNote/15298620281679.html</id>
+    <content type="html"><![CDATA[
+<p>一个完整的访问过程如下：</p>
+
+<ol>
+<li>打开浏览器在地址栏输入 URL 并访问；</li>
+<li>路由将 URL 请求映射到指定控制器上；</li>
+<li>控制器收到请求，开始进行处理。如果视图需要动态数据进行渲染，则控制器会开始从模型中读取数据；</li>
+<li>数据读取完毕，将数据传送给视图进行渲染；</li>
+<li>视图渲染完成，在浏览器上呈现出完整页面；</li>
+</ol>
+
+<p><img src="media/15298620281679/15298621278382.jpg" alt=""/></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[数据库]]></title>
+    <link href="https://sleepingwater.github.io/MWebNote/15304671583500.html"/>
+    <updated>2018-07-02T01:45:58+08:00</updated>
+    <id>https://sleepingwater.github.io/MWebNote/15304671583500.html</id>
+    <content type="html"><![CDATA[
+<h3 id="toc_0">介绍</h3>
+
+<ul>
+<li>Laravel 的 Eloquent ORM 提供了漂亮、简洁的 ActiveRecord 实现来和数据库的互动。 每个数据库表会和一个对应的「模型」互动。</li>
+<li>Eloquent 数据表命名约定机制即属于『约定优于配置』</li>
+</ul>
 
 ]]></content>
   </entry>
