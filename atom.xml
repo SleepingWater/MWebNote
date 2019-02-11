@@ -4,7 +4,7 @@
   <title><![CDATA[学习笔记]]></title>
   <link href="https://sleepingwater.github.io/MWebNote/atom.xml" rel="self"/>
   <link href="https://sleepingwater.github.io/MWebNote/"/>
-  <updated>2018-11-19T12:00:43+08:00</updated>
+  <updated>2018-11-19T12:00:54+08:00</updated>
   <id>https://sleepingwater.github.io/MWebNote/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -325,6 +325,9 @@ console.log(calculateBonus(&quot;A&quot;,1000));
 * 1个构造函数：new Promise<br/>
 * 2个实例方法：.then和.catch<br/>
 * 4个静态方法：Promise.all、Promise.race(不常用)、Promise.resolve和Promise.reject</p>
+
+<p>then(..) 接受一个或两个参数:第一个用于完成回调，第二个用于拒绝回调。如果两者中的任何一个被省略或者作为非函 数值传入的话，就会替换为相应的默认回调。默认完成回调只是把消息传递下去，而默认拒绝回调则只是重新抛出(传播)其 接收到的出错原因。<br/>
+就像刚刚讨论过的一样，catch(..) 只接受一个拒绝回调作为参数，并自动替换默认完成回调。换句话说，它等价于 then(null,..) </p>
 
 ]]></content>
   </entry>
